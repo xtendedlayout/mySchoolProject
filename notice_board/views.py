@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -8,6 +9,11 @@ from .models import Announcement
 from .serializers import UserSerializer, AnnouncementSerializer
 
 User = get_user_model()
+
+#The view class for the landing page
+class LandingPageView(APIView):
+    def get(self, request):
+        return render(request, "notice_board/landingpage.html")
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()

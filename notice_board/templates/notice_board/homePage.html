@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,
+wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{%load static%}
+    <link rel="shortcut icon" href="{%static '/images/zutLogo.png'%}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static '/CSSfiles/homestyle.css'%}">
+    <title>Zambia University Collage Technology Online Notice Board</title>
+</head>
+<body>
+	<!-------------------- Header Section Design -------------------->
+	<header>
+
+		<a href="#" ><img src="{%static 'images\zutLogo.png'%}" class="logo"></a>
+		<button class="hamburger-menu">&#9776;</button>
+		<nav class="navbar">
+			<ul>
+				<li><a href="#homeSection">Home</a></li>
+				<li><a href="#aboutSection">About</a></li>
+				<li><a href="#contactSection">Contact Us</a></li>
+			</ul>
+		</nav>
+		<div class="auth-links">
+			<a href="/notice_board/loginPage" class="auth-login">Login</a>
+			<a href="#" class="auth-signup">Sign Up</a>	
+				
+		</div>
+		
+	</header>
+
+	<!-------------------- Main Section Design -------------------->
+	<main>
+
+	<!-------------------- Home Section Design -------------------->
+		<section class="home" id="homeSection">
+			<div class="hometext">
+				<h1>Zambia University <br> College of Technology <br><span>Online Notice Board</span></h1>
+	            <p>Your one-stop source for important <br>announcements, updates, and <br> information.</p>
+	            <a href="#" class="signup-button">Sign Up Now</a>
+            </div>
+		</section>
+
+	<!-------------------- announcements Section Design -------------------->
+		<section class="announcements">
+			<h3> Latest anouncements </h3>
+			<div class="announce-container">
+
+				{% if latest_announcements %}
+				{% for announcement in latest_announcements %}
+				<div class="ann-box">
+					<div class="ann-content">
+						<div class="ann-box-header">
+							<img src="{%static 'images/profile.jpg'%}" class="ann-img">
+							<div class="ann-box-text">
+								<div class="ann-date">
+									<h1>Date</h1>
+									<p>{{announcement.created_at.date}} | {{announcement.created_at.time}}</p>
+								</div>
+								<div class="ann-case">
+									<h1>Case</h1>
+									<p>{{announcement.title}} | {{announcement.created_by}}</p>
+								</div>						
+							</div>
+						</div>
+
+						<p class="ann-box-message">{{announcement.content}}</p>
+
+						<button class="ann-box-button">Read More</button>
+					</div>
+				</div>
+				{% endfor%}
+				{%else%}
+				<p>No announcements available</p>
+				{%endif%}
+				<!---
+				<div class="ann-box">
+
+					<div class="ann-box-header">
+						<img src="{%static 'images/profile.jpg'%}" class="ann-img">
+						<div class="ann-box-text">
+							<div class="ann-date">
+								<h1>Date</h1>
+								<p>20/07/2024 | 2:17pm</p>
+							</div>
+							<div class="ann-case">
+								<h1>Case</h1>
+								<p>Project Updates | Mr Kaputala</p>
+							</div>						
+						</div>
+					</div>
+
+					<p class="ann-box-message">Take note that final year students needs to showcase their progress of there final year projects</p>
+
+					<button class="ann-box-button">Read More</button>
+
+				</div>-->
+			</div>
+			
+		</section>
+
+	<!-------------------- calender Section Design -------------------->
+		<section class="events-calendar">
+			<h3>Events Calendar</h3>
+			<div class="container">
+                
+                <div class="event">
+                	<strong>27 July</strong> 
+                    <p>Open Day for all students</p>
+                </div>
+                <div class="event">
+                	<strong>02 August</strong>
+                    <p>Workshop/Conference</p>
+                </div>
+                <div class="event">
+                	<strong>17 August</strong> 
+                    <p>Open Day for all students</p>
+                </div>
+                <div class="event">
+                	<strong>01 November</strong> 
+                    <p>Sports Day for all students</p>
+                </div>
+            </div>
+		</section>
+
+		<!-------------------- About Section Design -------------------->
+		<section class="about" id="aboutSection">
+			<div class="about-container">
+				<h3>About the Notice board</h3>
+				<div class="about-content">
+					<img src="{%static 'images/About image.png'%}">
+					<div class="about-text">
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+							proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						</p>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+							proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						</p>
+					</div>
+				</div>
+			</div>
+			
+		</section>
+		
+		<!-------------------- Help Section Design -------------------->
+		<section class="help" id="contactSection">
+			<div class="help-container">
+				<h3>Contact help desk for help</h3>
+				<div class="help-card">
+					<div class="help-form">
+						<form>
+							<input type="text" name="name" placeholder="Your Name">
+							<input type="text" name="email" placeholder="Your email address">
+							<input type="text" name="subject" placeholder="Subject">
+							<input type="text" name="number" placeholder="Mobile number">
+							<div class="help-message">
+                                <textarea name="message" placeholder="Message"></textarea>
+                                <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
+						</form>						
+					</div>
+					<img src="{%static 'images/backimage.jpg'%}">
+				</div>
+			</div>
+		</section>
+
+		<script type="text/javascript">
+
+            document.addEventListener('DOMContentLoaded', function() {
+    // Select the hamburger menu, navbar, and auth-links
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const navbar = document.querySelector('.navbar');
+    const authLinks = document.querySelector('.auth-links');
+
+    // Add click event listener to the hamburger menu
+    hamburgerMenu.addEventListener('click', function() {
+        // Toggle the 'active' class on both navbar and auth-links
+        navbar.classList.toggle('active');
+        authLinks.classList.toggle('active');
+    });
+});
+
+
+
+
+
+    const textarea = document.querySelector('.help-message textarea');
+
+    textarea.addEventListener('input', function() {
+        this.style.height = 'auto';  // Reset height to calculate the new height correctly
+
+        const lineHeight = parseInt(window.getComputedStyle(this).lineHeight);  // Get the line height
+        const maxLines = 9;  // Maximum number of lines before scrolling
+        const maxHeight = maxLines * lineHeight;  // Calculate the max height
+
+        // Adjust height based on content and wrapping
+        if (this.scrollHeight > maxHeight) {
+            this.style.height = maxHeight + 'px';  // Set height to maxHeight if content exceeds
+            this.style.overflowY = 'scroll';  // Enable vertical scrollbar
+        } else {
+            this.style.height = this.scrollHeight + 'px';  // Adjust height to content
+            this.style.overflowY = 'hidden';  // Hide scrollbar if not needed
+        }
+    });
+</script>
+
+
+	</main>
+
+	<!-------------------- footer Section Design -------------------->
+	
+	 <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="{%static 'images/zutLogo.png'%}" alt="Logo">
+                    <p>
+                    	We offer a world class learning atmosphere which leads students to archieve worthwhile, meaningful outstanding goals without pending inordinate time and energy
+                    </p>
+                </div>
+                <div class="quick-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Student Portal</a></li>
+                        <li><a href="#">Library</a></li>
+                        <li><a href="#">Campus Map</a></li>
+                    </ul>
+                </div>
+                <div class="social-links">
+                    <h3>Social Links</h3>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Zambia University College of Technology. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -12,20 +12,27 @@ User = get_user_model()
 
 #The view class for the landing page
 class LandingPageView(APIView):
+    announcement_list = Announcement.objects.order_by('created_at')[:2]
+    context={
+        "latest_announcements" : announcement_list
+    }
     def get(self, request):
-        return render(request, "notice_board/landingpage.html")
+        return render(request, "notice_board/homePage.html", self.context)
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    def get(self, request):
+        registering_user = User.get(username=request.POST["username"], password=request.POST["password"])
+        return HttpResponse("registering")
 
 class LoginView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, *args, **kwargs):
-        username = request.data.get('username')
+        email = request.data.get('email')
         password = request.data.get('password')
-        user = User.objects.filter(username=username).first()
+        user = User.objects.filter(email=email).first()
         if user and user.check_password(password):
             refresh = RefreshToken.for_user(user)
             return Response({
@@ -33,6 +40,10 @@ class LoginView(APIView):
                 'access': str(refresh.access_token),
             })
         return Response({'error': 'Invalid Credentials'}, status=400)
+    
+class LoginPageView(APIView):
+    def get(self,request):
+        return render(request, "notice_board/login.html")
 
 class AnnouncementCreateView(generics.CreateAPIView):
     queryset = Announcement.objects.all()

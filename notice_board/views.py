@@ -1,9 +1,11 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import sessions
 from django.shortcuts import render
-from rest_framework import generics, permissions
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
+from django.urls import reverse
+from rest_framework import generics, permissions # type: ignore
+from rest_framework.response import Response # type: ignore
+from rest_framework.views import APIView # type: ignore
+from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
 from django.contrib.auth import get_user_model
 from .models import Announcement
 from .serializers import UserSerializer, AnnouncementSerializer
@@ -16,6 +18,7 @@ class LandingPageView(APIView):
     context={
         "latest_announcements" : announcement_list
     }
+
     def get(self, request):
         return render(request, "notice_board/homePage.html", self.context)
 
@@ -33,16 +36,35 @@ class LoginView(APIView):
         email = request.data.get('email')
         password = request.data.get('password')
         user = User.objects.filter(email=email).first()
-        if user and user.check_password(password):
-            refresh = RefreshToken.for_user(user)
-            return Response({
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-            })
-        return Response({'error': 'Invalid Credentials'}, status=400)
+        if user and user.password == password:
+            #refresh = RefreshToken.for_user(user)
+            #return Response({
+             #   'refresh': str(refresh),
+            #    'access': str(refresh.access_token),
+            #})
+            request.session["name"]= user.username
+            request.session["role"]= user.role
+            return HttpResponseRedirect(reverse("notice_board:home"))
+        return Response({'error': 'Invalid Credentials',
+                         'email': email,
+                         'password': password,
+                         'user': user.email,
+                         'userp': user.password,
+                         'deb': user.check_password(password)}, status=400)
     
 class LoginPageView(APIView):
     def get(self,request):
+        return render(request, "notice_board/login.html")
+    
+class LoginValidateView(APIView):
+    def post(self,request):
+        if request.method =="POST":
+            if request.session.test_cookie_worked():
+                request.session.delete_test_cookie()
+                return HttpResponse("You are logged in")
+            else:
+                return HttpResponse("enable cookies and try again")
+        request.session.set_test_cookie()
         return render(request, "notice_board/login.html")
 
 class AnnouncementCreateView(generics.CreateAPIView):

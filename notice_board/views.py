@@ -23,12 +23,24 @@ class LandingPageView(APIView):
         return render(request, "notice_board/homePage.html", self.context)
 
 class RegisterView(generics.CreateAPIView):
+    def get(self, request):
+        return render(request, "notice_board/signup.html")
+
+class ValidateSigupView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    def get(self, request):
-        registering_user = User.get(username=request.POST["username"], password=request.POST["password"])
-        return HttpResponse("registering")
-
+    def post(self, request):
+        name = request.data.get('fullname')
+        email = request.data.get('email')
+        password = request.data.get('password')
+        tempuser = User.objects.filter(email=email).first()
+        if tempuser:
+            return render(request, "notice_board/signup.html",{'error': 'This email is already Registered'})
+        newUser = User(first_name=name, email= email, password=password, role="student")
+        newUser.save()
+        request.session["name"]= newUser.first_name
+        request.session["role"]= newUser.role
+        return HttpResponseRedirect(reverse("notice_board:dashboard"))
 class LoginView(APIView):
     permission_classes = (permissions.AllowAny,)
 
@@ -44,18 +56,34 @@ class LoginView(APIView):
             #})
             request.session["name"]= user.username
             request.session["role"]= user.role
-            return HttpResponseRedirect(reverse("notice_board:home"))
-        return Response({'error': 'Invalid Credentials',
-                         'email': email,
-                         'password': password,
-                         'user': user.email,
-                         'userp': user.password,
-                         'deb': user.check_password(password)}, status=400)
+            if user.role == "admin":
+                return HttpResponseRedirect(reverse("notice_board:admin"))
+            return HttpResponseRedirect(reverse("notice_board:dashboard"))
+        return Response({'error': 'Invalid Credentials'}, status=400)
     
 class LoginPageView(APIView):
     def get(self,request):
         return render(request, "notice_board/login.html")
-    
+
+class StudentPanelView(APIView):
+    announcement_list = Announcement.objects.order_by('created_at')[:2]
+    context={
+        "latest_announcements" : announcement_list
+    }
+
+    def get(self, request):
+        return render(request, "notice_board/studentPanel.html", self.context)
+
+class AdminPanelView(APIView):
+    announcement_list = Announcement.objects.order_by('created_at')[:2]
+    context={
+        "latest_announcements" : announcement_list
+    }
+
+    def get(self, request):
+        return render(request, "notice_board/adminPanel.html", self.context)
+
+ #currently of no use   
 class LoginValidateView(APIView):
     def post(self,request):
         if request.method =="POST":
@@ -66,6 +94,14 @@ class LoginValidateView(APIView):
                 return HttpResponse("enable cookies and try again")
         request.session.set_test_cookie()
         return render(request, "notice_board/login.html")
+    
+
+class LogoutView(APIView):
+    def get(self, request):
+        uzer =request.session["name"]
+        if uzer:
+            del request.session["name"]
+            return HttpResponseRedirect(reverse("notice_board:home"))
 
 class AnnouncementCreateView(generics.CreateAPIView):
     queryset = Announcement.objects.all()

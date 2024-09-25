@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Announcements</title>
-    <link rel="stylesheet" href="CSSfiles/studentPanel.css"> <!-- Link to the studentPanel.css file -->
+    {% load static%}
+    <link rel="stylesheet" href="{% static '/CSSfiles/studentPanel.css'%}"> <!-- Link to the studentPanel.css file -->
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papqeFfLX4e+TcZP8RscHVZP5rIybykS3A34YXrWyAa6ozYFsPga/w3nhX1mBE6CKjSnHm1VSVpgD1jcJk1hVA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -12,7 +13,7 @@
     <header>
         <nav class="navbar">
             <div class="navbar-logo">
-                <a href="index.html"><img src="images\zutLogo.png" alt="School Logo"></a>
+                <a href="index.html"><img src="{%static '/images/zutLogo.png'%}" alt="School Logo"></a>
             </div>
             <div class="navbar-links">
                 <div class="dropdown">
@@ -27,13 +28,13 @@
                 <div class="dropdown">
                     <button class="dropbtn">
                         <div class="profile-icon">
-                            <img src="images\userProfile.png" alt="User Profile Picture" class="profile-img">
+                            <img src="{%static '/images/profile.jpg'%}" alt="User Profile Picture" class="profile-img">
                         </div>
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-content">
-                        <span class="username" id="username">John Doe</span> <!-- Replace with dynamic username -->
-                        <a href="logout.html">Log Out</a>
+                        <span class="username" id="username">{{request.session.name}}</span> <!-- Replace with dynamic username -->
+                        <a href="logout/">Log Out</a>
                     </div>
                 </div>
             </div>
@@ -42,6 +43,7 @@
 
     <main>
         <!-- General Announcements Section -->
+         
         <section id="general-announcements">
             <h2>General Announcements</h2>
             <div class="announcement-container">
@@ -50,6 +52,18 @@
                     <p>We are excited to start the new semester. Please check the schedule for your classes.</p>
                     <span class="date">September 1, 2024</span>
                 </div>
+                
+                {% if latest_announcements %}
+				{% for announcement in latest_announcements %}
+                <div class="announcement">
+                    <h3>{{announcement.title}}</h3>
+                    <p>{{announcement.content}}</p>
+                    <span class="date">{{announcement.created_at.date}}</span>
+                </div>
+                {% endfor%}
+				{%else%}
+				<p>No announcements available</p>
+				{%endif%}
                 <!-- Add more general announcements as needed -->
             </div>
         </section>
@@ -156,12 +170,12 @@
         });
     </script>
 
-    <!-- Optional JavaScript to Dynamically Set Username and Profile Image -->
+    <!-- Optional JavaScript to Dynamically Set Username and Profile Image ->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Example: Fetch the username and profile image from a global variable or an API
-            const username = "John Doe"; // Replace with dynamic data
-            const profileImgSrc = "images\userProfile.png"; // Replace with dynamic image source
+            const username = "{{requset.session.name}}"; // Replace with dynamic data
+            const profileImgSrc = "{%static '/images/profile.jpg'%}"; // Replace with dynamic image source
 
             // Set the username in the Profile dropdown
             document.getElementById('username').textContent = username;
@@ -169,6 +183,6 @@
             // Set the profile image in the Profile icon
             document.querySelector('.profile-img').src = profileImgSrc;
         });
-    </script>
+    </script>-->
 </body>
 </html>

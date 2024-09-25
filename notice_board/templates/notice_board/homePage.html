@@ -30,13 +30,8 @@ wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&dis
 			</ul>
 		</nav>
 		<div class="auth-links">
-			{%if request.session.name %}
-			<a href="#" class="auth-signup">{{request.session.name}}</a>	
-			
-			{%else%}
 			<a href="/notice_board/auth" class="auth-login">Login</a>
-			<a href="#" class="auth-signup">Sign Up</a>	
-			{%endif%}
+			<a href="/notice_board/register" class="auth-signup">Sign Up</a>	
 				
 		</div>
 		
@@ -50,11 +45,7 @@ wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&dis
 			<div class="hometext">
 				<h1>Zambia University <br> College of Technology <br><span>Online Notice Board</span></h1>
 	            <p>Your one-stop source for important <br>announcements, updates, and <br> information.</p>
-				{%if request.session.name %}
-				<p></p>
-				{%else%}
 	            <a href="#" class="signup-button">Sign Up Now</a>
-				{%endif%}
             </div>
 		</section>
 

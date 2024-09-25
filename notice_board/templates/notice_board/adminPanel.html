@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    {% load static%}
+    <link rel="stylesheet" href="{% static '/CSSfiles/adminPanel.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="admin-panel">
+        <!-- Header Section -->
+        <header class="admin-header">
+            <img src="{%static '/images/zutLogo.png'%}" alt="Logo" class="logo">
+            <div class="user-profile">
+                <img src="{%static '/images/profile.jpg'%}" alt="User Profile" class="profile-pic">
+            </div>
+        </header>
+
+        <!-- Create Post Section -->
+        <div class="post-container">
+            <h2>Create new post</h2>
+            <form class="message-input">
+                <input type="text" placeholder="Title" class="input-title">
+
+                <!-- Category Selection with label on left and dropdowns on right -->
+                <div class="category-section">
+                    <label for="category" class="category-label">Select Category</label>
+                    <div class="category-bar">
+                        <div class="dropdown">
+                            <button class="dropbtn">General</button>
+                            <select class="dropdown-content">
+                                <option value="Events">Events</option>
+                                <option value="Lost and Found">Lost and Found</option>
+                            </select>
+                        </div>
+
+                        <div class="dropdown">
+                            <button class="dropbtn">School of IT</button>
+                            <div class="dropdown-content">
+                                <a href="#">ICT</a>
+                                <a href="#">BCS</a>
+                                <a href="#">BSE</a>
+                                <a href="#">BIT</a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown">
+                            <button class="dropbtn">School of Business</button>
+                            <div class="dropdown-content">
+                                <a href="#">BBA</a>
+                                <a href="#">BACC</a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown">
+                            <button class="dropbtn">School of Engineering</button>
+                            <div class="dropdown-content">
+                                <a href="#">Telecoms</a>
+                                <a href="#">Electrical</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gmail-like text input -->
+                <textarea class="text-field" placeholder="Write your post..."></textarea>
+
+                <!-- Text Formatting Options & Submit Button -->
+                <div class="action-section">
+                    <!-- Formatting buttons -->
+                    <div class="format-buttons">
+                        <!-- Not  currently needed
+                        <button type="button" class="icon-btn"><i class="fas fa-bold"></i></button>
+                        <button type="button" class="icon-btn"><i class="fas fa-link"></i></button>-->
+                        <button type="button" class="icon-btn"><i class="fas fa-paperclip"></i></button>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openTab(evt, categoryName) {
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the active class
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab's content and add an "active" class to the clicked tab
+    document.getElementById(categoryName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Open the first tab by default
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector(".tablinks").click();
+});
+
+    </script>
+</body>
+</html>

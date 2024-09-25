@@ -13,9 +13,11 @@ class User(AbstractUser):
 
 class Announcement(models.Model):
     TITLE_CHOICES = (
-        ('academic', 'Academic'),
-        ('extracurricular', 'Extracurricular'),
-        ('administrative', 'Administrative'),
+        ('general', 'General'),
+        ('class', 'Class'),
+        ('course', 'Course'),
+        ('intake', 'Intake'),
+        ('event', 'Event')
     )
     title = models.CharField(max_length=100)
     content = models.TextField()
@@ -24,3 +26,4 @@ class Announcement(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     attachment = models.FileField(upload_to='attachments/', null=True, blank=True)
 
+    

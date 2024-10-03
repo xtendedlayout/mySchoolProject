@@ -117,7 +117,7 @@ class AnnouncementCreateView(generics.CreateAPIView):
                 choiceCounter += 1
                 category = typeList[choices.index(choice)]
         if(choiceCounter != 1):
-            return  HttpResponseRedirect(redirect("notice_board:admin", errorMessage = {'msg': "Select one category only"}))
+            return  HttpResponseRedirect(reverse("notice_board:admin", errorMessage = {'msg': "Select one category only"}))
         title = request.data.get('title')
         content = request.data.get('content')
         userId = request.session["id"]

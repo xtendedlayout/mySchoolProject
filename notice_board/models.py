@@ -26,4 +26,8 @@ class Announcement(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     attachment = models.FileField(upload_to='attachments/', null=True, blank=True)
 
-    
+class Comments(models.Model):
+    comment = models.CharField(max_length=300)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    comment_for = models.ForeignKey(Announcement, on_delete=models.CASCADE)

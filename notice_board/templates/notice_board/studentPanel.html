@@ -55,11 +55,13 @@
                 
                 {% if latest_announcements %}
 				{% for announcement in latest_announcements %}
+                {% if announcement.type == "General" %}
                 <div class="announcement">
                     <h3>{{announcement.title}}</h3>
                     <p>{{announcement.content}}</p>
                     <span class="date">{{announcement.created_at.date}}</span>
                 </div>
+                {%endif%}
                 {% endfor%}
 				{%else%}
 				<p>No announcements available</p>
@@ -86,6 +88,29 @@
                         </form>
                     </div>
                 </div>
+                
+                {% if latest_announcements %}
+				{% for announcement in latest_announcements %}
+                {% if announcement.type == "Class" %}
+                <div class="announcement">
+                    <h3>{{announcement.title}}</h3>
+                    <p>{{announcement.content}}</p>
+                    <span class="date">{{announcement.created_at.date}}</span>
+
+                    <!-- Comment Form -->
+                    <div class="comment-section">
+                        <h4>Leave a Comment:</h4>
+                        <form>
+                            <textarea name="comment" placeholder="Write your comment here..." required></textarea>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                {%endif%}
+                {% endfor%}
+				{%else%}
+				<p>No announcements available</p>
+				{%endif%}
                 <!-- Add more class announcements as needed -->
             </div>
         </section>
@@ -108,18 +133,14 @@
                         </form>
                     </div>
                 </div>
-                <!-- Add more intake announcements as needed -->
-            </div>
-        </section>
-
-        <!-- Course Announcements Section -->
-        <section id="course-announcements">
-            <h2>Course Announcements</h2>
-            <div class="announcement-container">
+                
+                {% if latest_announcements %}
+				{% for announcement in latest_announcements %}
+                {% if announcement.type == "Intake" %}
                 <div class="announcement">
-                    <h3>New Course: Introduction to AI</h3>
-                    <p>We are pleased to introduce a new course on Artificial Intelligence starting next semester.</p>
-                    <span class="date">September 15, 2024</span>
+                    <h3>{{announcement.title}}</h3>
+                    <p>{{announcement.content}}</p>
+                    <span class="date">{{announcement.created_at.date}}</span>
 
                     <!-- Comment Form -->
                     <div class="comment-section">
@@ -130,6 +151,38 @@
                         </form>
                     </div>
                 </div>
+                {%endif%}
+                {% endfor%}
+				{%else%}
+				<p>No announcements available</p>
+				{%endif%}
+                <!-- Add more intake announcements as needed -->
+            </div>
+        </section>
+
+        <!-- Course Announcements Section -->
+        <section id="course-announcements">
+            <h2>Course Announcements</h2>
+            <div class="announcement-container">
+				{% for announcement in latest_announcements %}
+                {% if announcement.type == "Course" %}
+                <div class="announcement">
+                    <h3>{{announcement.title}}</h3>
+                    <p>{{announcement.content}}</p>
+                    <span class="date">{{announcement.created_at.date}}</span>
+
+                    <!-- Comment Form -->
+                    <div class="comment-section">
+                        <h4>Leave a Comment:</h4>
+                        <form>
+                            <textarea name="comment" placeholder="Write your comment here..." required></textarea>
+                            <input type="hidden" name="announcement_id" value="{{announcement.id}}">
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                {%endif%}
+                {% endfor%}
                 <!-- Add more course announcements as needed -->
             </div>
         </section>

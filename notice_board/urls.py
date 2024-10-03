@@ -11,7 +11,7 @@ urlpatterns = [
     path('admin/', AdminPanelView.as_view(), name='admin'),
     path('dashboard/', StudentPanelView.as_view(), name='dashboard'),
     path('dashboard/logout/', LogoutView.as_view(), name='logout'),
-    path('announcements/', AnnouncementCreateView.as_view(), name='create_announcement'),
+    path('admin/create/', AnnouncementCreateView.as_view(), name='create_announcement'),
     path('announcements/all/', AnnouncementListView.as_view(), name='list_announcements'),
     path('announcements/<str:type>/', AnnouncementTypeListView.as_view(), name='list_announcements_by_type'),
 ]

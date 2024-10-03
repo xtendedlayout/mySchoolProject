@@ -7,7 +7,7 @@ from rest_framework.response import Response # type: ignore
 from rest_framework.views import APIView # type: ignore
 from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
 from django.contrib.auth import get_user_model
-from .models import Announcement
+from .models import Announcement, Comments
 from .serializers import UserSerializer, AnnouncementSerializer
 
 User = get_user_model()
@@ -56,6 +56,7 @@ class LoginView(APIView):
             #})
             request.session["name"]= user.username
             request.session["role"]= user.role
+            request.session["id"] = user.id
             if user.role == "admin":
                 return HttpResponseRedirect(reverse("notice_board:admin"))
             return HttpResponseRedirect(reverse("notice_board:dashboard"))
@@ -66,7 +67,8 @@ class LoginPageView(APIView):
         return render(request, "notice_board/login.html")
 
 class StudentPanelView(APIView):
-    announcement_list = Announcement.objects.order_by('created_at')[:2]
+    announcement_list = Announcement.objects.order_by('created_at')[:5]
+    #general_announcements = Announcement.objects.filter("Genral").order_by('created_at')[:10]
     context={
         "latest_announcements" : announcement_list
     }
@@ -75,13 +77,9 @@ class StudentPanelView(APIView):
         return render(request, "notice_board/studentPanel.html", self.context)
 
 class AdminPanelView(APIView):
-    announcement_list = Announcement.objects.order_by('created_at')[:2]
-    context={
-        "latest_announcements" : announcement_list
-    }
 
     def get(self, request):
-        return render(request, "notice_board/adminPanel.html", self.context)
+        return render(request, "notice_board/adminPanel.html")
 
  #currently of no use   
 class LoginValidateView(APIView):
@@ -106,10 +104,45 @@ class LogoutView(APIView):
 class AnnouncementCreateView(generics.CreateAPIView):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
+    #def perform_create(self, serializer):
+    #    serializer.save(created_by=self.request.user)
+    def post(self, request):
+        choiceCounter = 0
+        typeList = ["General", "Intake", "Class", "Course"]
+        choices = [request.data.get('General'), request.data.get('Intake'), request.data.get('Class'), request.data.get('Course')]
+        for choice in choices:
+            if(choice):
+                choiceCounter += 1
+                category = typeList[choices.index(choice)]
+        if(choiceCounter != 1):
+            return  HttpResponseRedirect(redirect("notice_board:admin", errorMessage = {'msg': "Select one category only"}))
+        title = request.data.get('title')
+        content = request.data.get('content')
+        userId = request.session["id"]
+        if(title=="" or content==""):
+            errorMessage = {
+                "msg": "Post should have both a title and content"
+            }
+            return  HttpResponseRedirect(reverse("notice_board:admin"), errorMessage)
+        newAnnouncement = Announcement(title=title, content=content, type=category,created_by_id=userId)
+        newAnnouncement.save()
+        return HttpResponseRedirect(reverse("notice_board:admin"))
+
+
+class AnnouncementCommentView(APIView):
+    def post(self, request):
+        comment = request.data.get('comment')
+        announcement_id = request.data.get('announcement_id')
+        user_id = request.session["id"]
+        if comment:
+            newComment = Comments(comment=comment, created_by=user_id,comment_for=announcement_id)
+            newComment.save()
+            return HttpResponseRedirect(reverse("notice_board:dashboard"))
+        
+
+        
 
 class AnnouncementListView(generics.ListAPIView):
     queryset = Announcement.objects.all()

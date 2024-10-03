@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Announcements</title>
+    {% load static%}
+    <link rel="stylesheet" href="{% static '/CSSfiles/studentPanel.css'%}"> <!-- Link to the studentPanel.css file -->
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papqeFfLX4e+TcZP8RscHVZP5rIybykS3A34YXrWyAa6ozYFsPga/w3nhX1mBE6CKjSnHm1VSVpgD1jcJk1hVA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-logo">
+                <a href="index.html"><img src="{%static '/images/zutLogo.png'%}" alt="School Logo"></a>
+            </div>
+            <div class="navbar-links">
+                <div class="dropdown">
+                    <button class="dropbtn">Announcements <i class="fa fa-caret-down"></i></button>
+                    <div class="dropdown-content">
+                        <a href="#general-announcements">General Announcements</a>
+                        <a href="#class-announcements">Class Announcements</a>
+                        <a href="#intake-announcements">Intake Announcements</a>
+                        <a href="#course-announcements">Course Announcements</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        <div class="profile-icon">
+                            <img src="{%static '/images/profile.jpg'%}" alt="User Profile Picture" class="profile-img">
+                        </div>
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <span class="username" id="username">{{request.session.name}}</span> <!-- Replace with dynamic username -->
+                        <a href="logout/">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- General Announcements Section -->
+         
+        <section id="general-announcements">
+            <h2>General Announcements</h2>
+            <div class="announcement-container">
+                <div class="announcement">
+                    <h3>Welcome to the New Semester!</h3>
+                    <p>We are excited to start the new semester. Please check the schedule for your classes.</p>
+                    <span class="date">September 1, 2024</span>
+                </div>
+                
+                {% if latest_announcements %}
+				{% for announcement in latest_announcements %}
+                {% if announcement.type == "General" %}
+                <div class="announcement">
+                    <h3>{{announcement.title}}</h3>
+                    <p>{{announcement.content}}</p>
+                    <span class="date">{{announcement.created_at.date}}</span>
+                </div>
+                {%endif%}
+                {% endfor%}
+				{%else%}
+				<p>No announcements available</p>
+				{%endif%}
+                <!-- Add more general announcements as needed -->
+            </div>
+        </section>
+
+        <!-- Class Announcements Section -->
+        <section id="class-announcements">
+            <h2>Class Announcements</h2>
+            <div class="announcement-container">
+                <div class="announcement">
+                    <h3>Mathematics 101 - Exam Schedule</h3>
+                    <p>The first exam for Mathematics 101 will be held on October 15, 2024.</p>
+                    <span class="date">September 5, 2024</span>
+
+                    <!-- Comment Form -->
+                    <div class="comment-section">
+                        <h4>Leave a Comment:</h4>
+                        <form>
+                            <textarea name="comment" placeholder="Write your comment here..." required></textarea>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                
+                {% if latest_announcements %}
+				{% for announcement in latest_announcements %}
+                {% if announcement.type == "Class" %}
+                <div class="announcement">
+                    <h3>{{announcement.title}}</h3>
+                    <p>{{announcement.content}}</p>
+                    <span class="date">{{announcement.created_at.date}}</span>
+
+                    <!-- Comment Form -->
+                    <div class="comment-section">
+                        <h4>Leave a Comment:</h4>
+                        <form>
+                            <textarea name="comment" placeholder="Write your comment here..." required></textarea>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                {%endif%}
+                {% endfor%}
+				{%else%}
+				<p>No announcements available</p>
+				{%endif%}
+                <!-- Add more class announcements as needed -->
+            </div>
+        </section>
+
+        <!-- Intake Announcements Section -->
+        <section id="intake-announcements">
+            <h2>Intake Announcements</h2>
+            <div class="announcement-container">
+                <div class="announcement">
+                    <h3>New Intake Process Starting October</h3>
+                    <p>The new intake process for the upcoming semester will begin in October. Please visit the admissions office for more details.</p>
+                    <span class="date">September 10, 2024</span>
+
+                    <!-- Comment Form -->
+                    <div class="comment-section">
+                        <h4>Leave a Comment:</h4>
+                        <form>
+                            <textarea name="comment" placeholder="Write your comment here..." required></textarea>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                
+                {% if latest_announcements %}
+				{% for announcement in latest_announcements %}
+                {% if announcement.type == "Intake" %}
+                <div class="announcement">
+                    <h3>{{announcement.title}}</h3>
+                    <p>{{announcement.content}}</p>
+                    <span class="date">{{announcement.created_at.date}}</span>
+
+                    <!-- Comment Form -->
+                    <div class="comment-section">
+                        <h4>Leave a Comment:</h4>
+                        <form>
+                            <textarea name="comment" placeholder="Write your comment here..." required></textarea>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                {%endif%}
+                {% endfor%}
+				{%else%}
+				<p>No announcements available</p>
+				{%endif%}
+                <!-- Add more intake announcements as needed -->
+            </div>
+        </section>
+
+        <!-- Course Announcements Section -->
+        <section id="course-announcements">
+            <h2>Course Announcements</h2>
+            <div class="announcement-container">
+				{% for announcement in latest_announcements %}
+                {% if announcement.type == "Course" %}
+                <div class="announcement">
+                    <h3>{{announcement.title}}</h3>
+                    <p>{{announcement.content}}</p>
+                    <span class="date">{{announcement.created_at.date}}</span>
+
+                    <!-- Comment Form -->
+                    <div class="comment-section">
+                        <h4>Leave a Comment:</h4>
+                        <form>
+                            <textarea name="comment" placeholder="Write your comment here..." required></textarea>
+                            <input type="hidden" name="announcement_id" value="{{announcement.id}}">
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                {%endif%}
+                {% endfor%}
+                <!-- Add more course announcements as needed -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Zambia University College of Technology</p>
+    </footer>
+
+    <!-- JavaScript for Dropdown Functionality -->
+    <script>
+        // Dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdowns = document.querySelectorAll('.dropdown');
+
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('.dropbtn');
+                const content = dropdown.querySelector('.dropdown-content');
+
+                button.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    // Close other dropdowns
+                    dropdowns.forEach(d => {
+                        if (d !== dropdown) {
+                            d.querySelector('.dropdown-content').classList.remove('show');
+                        }
+                    });
+                    content.classList.toggle('show');
+                });
+            });
+
+            // Close dropdowns when clicking outside
+            window.addEventListener('click', function() {
+                document.querySelectorAll('.dropdown-content').forEach(content => {
+                    content.classList.remove('show');
+                });
+            });
+        });
+    </script>
+
+    <!-- Optional JavaScript to Dynamically Set Username and Profile Image ->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Example: Fetch the username and profile image from a global variable or an API
+            const username = "{{requset.session.name}}"; // Replace with dynamic data
+            const profileImgSrc = "{%static '/images/profile.jpg'%}"; // Replace with dynamic image source
+
+            // Set the username in the Profile dropdown
+            document.getElementById('username').textContent = username;
+
+            // Set the profile image in the Profile icon
+            document.querySelector('.profile-img').src = profileImgSrc;
+        });
+    </script>-->
+</body>
+</html>

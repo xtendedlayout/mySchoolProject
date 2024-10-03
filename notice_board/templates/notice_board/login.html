@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {% load static%}
+    <link rel="stylesheet" href="{% static '/CSSfiles/login.css'%}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Login</h2>
+            <form action="val/" method="post">
+                <div class="input-group">
+                    <input type="email" placeholder="Email address" name="email" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Password" name="password" required>
+                </div>
+                <button type="submit" class="login-button">Login</button>
+                <div class="additional-options">
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                    <a href="/notice_board/register" class="create-account">Not registered yet? <span>Create an account</span></a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Zambia University College of Technology. All rights reserved.</p>
+    </footer>
+</body>
+</html>
